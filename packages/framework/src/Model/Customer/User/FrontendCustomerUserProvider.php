@@ -4,6 +4,7 @@ namespace Shopsys\FrameworkBundle\Model\Customer\User;
 
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver;
 use Shopsys\FrameworkBundle\Model\Security\TimelimitLoginInterface;
 use Shopsys\FrameworkBundle\Model\Security\UniqueLoginInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -24,13 +25,20 @@ class FrontendCustomerUserProvider implements UserProviderInterface
     protected $domain;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver
+     */
+    protected EntityNameResolver $entityNameResolver;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository $customerUserRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver $entityNameResolver
      */
-    public function __construct(CustomerUserRepository $customerUserRepository, Domain $domain)
+    public function __construct(CustomerUserRepository $customerUserRepository, Domain $domain, EntityNameResolver $entityNameResolver)
     {
         $this->customerUserRepository = $customerUserRepository;
         $this->domain = $domain;
+        $this->entityNameResolver = $entityNameResolver;
     }
 
     /**
@@ -46,7 +54,8 @@ class FrontendCustomerUserProvider implements UserProviderInterface
 
         if ($customerUser === null) {
             $message = sprintf(
-                'Unable to find an active Shopsys\FrameworkBundle\Model\Customer\User object identified by email "%s".',
+                'Unable to find an active %s object identified by email "%s".',
+                $this->entityNameResolver->resolve(CustomerUser::class),
                 $email
             );
             throw new UsernameNotFoundException($message, 0);
