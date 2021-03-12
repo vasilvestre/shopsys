@@ -16,6 +16,7 @@ use Twig\TwigFunction;
 class ImageExtension extends AbstractExtension
 {
     protected const NOIMAGE_FILENAME = 'noimage.png';
+    protected const PLACEHOLDER_FILENAME = 'placeholder.gif';
 
     /**
      * @var string
@@ -181,6 +182,14 @@ class ImageExtension extends AbstractExtension
     }
 
     /**
+     * @return string
+     */
+    protected function getImagePlaceholder(): string
+    {
+        return $this->domain->getUrl() . $this->frontDesignImageUrlPrefix . '/' . static::PLACEHOLDER_FILENAME;
+    }
+
+    /**
      * @param string $entityName
      * @param string|null $type
      * @param string|null $sizeName
@@ -235,7 +244,7 @@ class ImageExtension extends AbstractExtension
         if ($useLazyLoading === true) {
             $htmlAttributes['loading'] = 'lazy';
             $htmlAttributes['data-src'] = $htmlAttributes['src'];
-            $htmlAttributes['src'] = '';
+            $htmlAttributes['src'] = $this->getImagePlaceholder();
         }
 
         return $this->twigEnvironment->render('@ShopsysFramework/Common/image.html.twig', [
