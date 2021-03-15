@@ -169,8 +169,9 @@ class ImageExtension extends AbstractExtension
         $entityName = 'noimage';
         $attributes['src'] = $this->getEmptyImageUrl();
         $additionalImagesData = [];
+        $showPlaceholder = false;
 
-        return $this->getImageHtmlByEntityName($attributes, $entityName, $additionalImagesData);
+        return $this->getImageHtmlByEntityName($attributes, $entityName, $additionalImagesData, $showPlaceholder);
     }
 
     /**
@@ -231,9 +232,10 @@ class ImageExtension extends AbstractExtension
      * @param array $attributes
      * @param string $entityName
      * @param \Shopsys\FrameworkBundle\Component\Image\AdditionalImageData[] $additionalImagesData
+     * @param mixed $showPlaceholder
      * @return string
      */
-    protected function getImageHtmlByEntityName(array $attributes, $entityName, $additionalImagesData = []): string
+    protected function getImageHtmlByEntityName(array $attributes, $entityName, $additionalImagesData = [], $showPlaceholder = true): string
     {
         $htmlAttributes = $attributes;
         unset($htmlAttributes['type'], $htmlAttributes['size']);
@@ -244,7 +246,7 @@ class ImageExtension extends AbstractExtension
         if ($useLazyLoading === true) {
             $htmlAttributes['loading'] = 'lazy';
             $htmlAttributes['data-src'] = $htmlAttributes['src'];
-            $htmlAttributes['src'] = $this->getImagePlaceholder();
+            $htmlAttributes['src'] = $showPlaceholder ? $this->getImagePlaceholder() : $htmlAttributes['src'];
         }
 
         return $this->twigEnvironment->render('@ShopsysFramework/Common/image.html.twig', [

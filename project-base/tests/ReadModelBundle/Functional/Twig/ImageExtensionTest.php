@@ -72,7 +72,7 @@ class ImageExtensionTest extends FunctionalTestCase
             $this->getCurrentUrl()
         );
         $expected .= sprintf(
-            '    <img alt="" class="image-product" itemprop="image" data-src="%s/content-test/images/product/default/1.jpg" title="" src="" loading="lazy"/>',
+            '    <img alt="" class="image-product" itemprop="image" data-src="%s/content-test/images/product/default/1.jpg" title="" src="%1$s/placeholder.gif" loading="lazy"/>',
             $this->getCurrentUrl()
         );
         $expected .= '</picture>';
@@ -117,7 +117,7 @@ class ImageExtensionTest extends FunctionalTestCase
 
         $expected = '<picture>';
         $expected .= sprintf(
-            '    <img alt="" class="image-noimage" title=""  itemprop="image" data-src="%s/noimage.png" src="" loading="lazy"/>',
+            '    <img alt="" class="image-noimage" title=""  itemprop="image" data-src="%s/noimage.png" src="%1$s/noimage.png" loading="lazy"/>',
             $this->getCurrentUrl()
         );
         $expected .= '</picture>';
@@ -136,7 +136,7 @@ class ImageExtensionTest extends FunctionalTestCase
 
         $expected = '<picture>';
         $expected .= sprintf(
-            '    <img alt="" class="image-noimage" title=""  itemprop="image" data-src="%s%snoimage.png" src="" loading="lazy"/>',
+            '    <img alt="" class="image-noimage" title=""  itemprop="image" data-src="%1$s%2$snoimage.png" src="%1$s%2$snoimage.png" loading="lazy"/>',
             $this->getCurrentUrl(),
             $defaultFrontDesignImageUrlPrefix
         );
